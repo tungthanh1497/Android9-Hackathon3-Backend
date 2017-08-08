@@ -47,7 +47,7 @@ app.post('/create', function(req, res){
       imageShow:imageShowValue,
       type: typeValue,
       time:timeValue,
-      sets:setValue,
+      sets:setsValue,
       level:levelValue,
       rating:ratingValue,
       material:materialValue,
@@ -71,4 +71,15 @@ app.get('/getFood', function(req, res){
       res.json(foods);
     }
   });
+});
+app.delete('/deleteFood/:foodId', function(req, res){
+    var foodId = req.params.foodId;
+
+    Food.findByIdAndRemove(foodId, function(error, food) {
+      if(err){
+        res.json({success: 0, message: "Could not delete data from mlab"});
+      }else {
+        res.json({success: 1, message: "Delete succesfully"});
+      }
+    });
 });
