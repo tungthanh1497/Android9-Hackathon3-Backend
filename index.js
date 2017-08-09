@@ -161,7 +161,7 @@ app.get('/getAllUser', function(req, res){
   });
 });
 app.get('/getUserProfile/:userId', function(req, res){
-  User.findOne({'/idFb/':req.params.userId}, function (err, user) {
+  User.findOne({'idFb':req.params.userId}, function (err, user) {
   // User.findById(req.params.userId,function(err, user){
     if(err){
       res.json({success: 0, message: "Could not get data from mlab"});
@@ -173,7 +173,7 @@ app.get('/getUserProfile/:userId', function(req, res){
 });
 app.put('/updateUser/:userId', function(req, res){
   // User.findById(req.params.userId, function (err, user) {
-  User.findOne({'/idFb/':req.params.userId}, function (err, user) {
+    User.findOne({'idFb':req.params.userId}, function (err, user) {
   // Handle any possible database errors
     if (err) {
         res.status(500).send(err);
