@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var userSchema = new Schema({
-    idFb: Number,
+    idFb: String,
     avaFb: String,
     nameFb: String,
     emailFb: String,
