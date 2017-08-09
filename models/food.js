@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var foodSchema = new Schema({
-    id: Number,
+    // id: Number,
     name: String,
     author: String,
     imageShow: String,
-    type: String,
+    type: Number,
     time: String,
     sets: Number,
     level: String,

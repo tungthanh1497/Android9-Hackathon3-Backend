@@ -1,10 +1,14 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var mongooseFood = require('mongoose');
 var Food = require('./models/food');
+var mongooseUser = require('mongoose');
+var User = require('./models/user');
 var app = express();
 
-mongoose.connect('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood'
+mongooseFood.connect('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood'
+, {useMongoClient: true});
+mongooseUser.connect('mongodb://admin:admin@ds017205.mlab.com:17205/cookmix_userprofile'
 , {useMongoClient: true});
 
 
@@ -17,18 +21,103 @@ app.use(bodyParser.json());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.get('/', function(request, response) {
-  response.render('pages/index');
-});
+// app.get('/', function(request, response) {
+//   response.render('pages/index');
+// });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.post('/create', function(req, res){
+app.post('/createUser', function(req, res){
   var body = req.body;
 
-  var idValue = body.id;
+  // var idValue = body.id;
+  var idValue = body.idFb;
+  var avaValue = body.avaFb;
+  var nameValue=body.nameFb;
+  var emailValue = body.emailFb;
+  var ratePointValue = body.ratePoint;
+  var rateNumValue = body.rateNum;
+
+  var user = new User({
+      // id:idValue,
+      idFb: idValue,
+      avaFb: avaValue,
+      nameFb: nameValue,
+      emailFb: emailValue,
+      ratePoint: ratePointValue,
+      rateNum: rateNumValue
+    });
+
+
+  user.save(function(err, createdUser){
+      if(err){
+          res.json({"success":0, "message": "Could not add record: "+err});
+      }else {
+          res.json(createdUser);
+      }
+    }
+  );
+});
+app.get('/getFood', function(req, res){
+  Food.find(function(err, foods){
+    if(err){
+      res.json({success: 0, message: "Could not get data from mlab"});
+    }else {
+      // res.json(foods);
+      res.send(foods);
+    }
+  });
+});
+app.delete('/deleteFood/:foodId', function(req, res){
+    var foodId = req.params.foodId;
+
+    Food.findByIdAndRemove(foodId, function(error, food) {
+      if(err){
+        res.json({"success": 0, "message": "Could not delete data from mlab"});
+      }else {
+        res.json({"success": 1, "message": "Delete succesfully"});
+      }
+    });
+});
+app.put('/updateFood/:foodId', function(req, res){
+  Food.findById(req.params.foodId, function (err, food) {
+  // Handle any possible database errors
+    if (err) {
+        res.status(500).send(err);
+    } else {
+        // Update each attribute with any possible attribute that may have been submitted in the body of the request
+        // If that attribute isn't in the request body, default back to whatever it was before.
+
+
+        food.name = req.body.name || food.name;
+        food.author = req.body.author || food.author;
+        food.imageShow = req.body.imageShow || food.imageShow;
+        food.type = req.body.type || food.type;
+        food.time = req.body.time || food.time;
+        food.sets = req.body.sets || food.sets;
+        food.level = req.body.level || food.level;
+        food.rating = req.body.rating || food.rating;
+        food.material = req.body.material || food.material;
+        food.cook = req.body.cook || food.cook;
+
+        // Save the updated document back to the database
+        food.save(function (err, food) {
+            if (err) {
+                res.status(500).send(err)
+            }
+            res.send(food);
+        });
+    }
+  });
+});
+
+
+app.post('/createUser', function(req, res){
+  var body = req.body;
+
+  // var idValue = body.id;
   var nameValue = body.name;
   var authorValue= body.author;
   var imageShowValue= body.imageShow;
@@ -41,7 +130,7 @@ app.post('/create', function(req, res){
   var cookValue = body.cook;
 
   var food = new Food({
-      id:idValue,
+      // id:idValue,
       name:nameValue,
       author:authorValue,
       imageShow:imageShowValue,
@@ -56,30 +145,21 @@ app.post('/create', function(req, res){
 
 
   food.save(function(err, createdFood){
-    if(err){
-        res.json({success:0, message: "Could not add record: "+err});
-    }else {
-        res.json(createdFood);
+      if(err){
+          res.json({"success":0, "message": "Could not add record: "+err});
+      }else {
+          res.json(createdFood);
+      }
     }
-  });
+  );
 });
-app.get('/getFood', function(req, res){
-  Food.find(function(err, foods){
+app.get('/getUser', function(req, res){
+  User.find(function(err, users){
     if(err){
       res.json({success: 0, message: "Could not get data from mlab"});
     }else {
-      res.json(foods);
+      // res.json(foods);
+      res.send(users);
     }
   });
-});
-app.delete('/deleteFood/:foodId', function(req, res){
-    var foodId = req.params.foodId;
-
-    Food.findByIdAndRemove(foodId, function(error, food) {
-      if(err){
-        res.json({success: 0, message: "Could not delete data from mlab"});
-      }else {
-        res.json({success: 1, message: "Delete succesfully"});
-      }
-    });
 });
