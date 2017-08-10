@@ -122,33 +122,61 @@ app.delete('/deleteFood/:foodId', function(req, res){
 app.post('/createUser', function(req, res){
   var body = req.body;
 
-  // var idValue = body.id;
-  var idValue = body.idFb;
-  var avaValue = body.avaFb;
-  var nameValue=body.nameFb;
-  var emailValue = body.emailFb;
-  var ratePointValue = body.ratePoint;
-  var rateNumValue = body.rateNum;
+    User.findOne({'idFb':body.idFb}, function (err, user) {
+      if(err){
+            res.json({"success":0, "message": "Could not add record: "+err});
+      }else{
+        if(user){
+          // Update each attribute with any possible attribute that may have been submitted in the body of the request
+          // If that attribute isn't in the request body, default back to whatever it was before.
 
-  var user = new User({
-      // id:idValue,
-      idFb: idValue,
-      avaFb: avaValue,
-      nameFb: nameValue,
-      emailFb: emailValue,
-      ratePoint: ratePointValue,
-      rateNum: rateNumValue
+          // user.idFb = req.body.idFb || user.idFb;
+          user.avaFb = req.body.avaFb || user.avaFb;
+          user.nameFb = req.body.nameFb || user.nameFb;
+          user.emailFb = req.body.emailFb || user.emailFb;
+          user.ratePoint = req.body.ratePoint || user.ratePoint;
+          user.rateNum = req.body.rateNum || user.rateNum;
+
+          // Save the updated document back to the database
+          user.save(function (err, user) {
+              if(err){
+                  res.json({"success":0, "message": "Could not update record: "+err});
+              }else {
+                  res.json(user);
+              }
+          });
+        }else{
+
+            // var idValue = body.id;
+            var idValue = body.idFb;
+            var avaValue = body.avaFb;
+            var nameValue=body.nameFb;
+            var emailValue = body.emailFb;
+            var ratePointValue = body.ratePoint;
+            var rateNumValue = body.rateNum;
+              var user = new User({
+                  // id:idValue,
+                  idFb: idValue,
+                  avaFb: avaValue,
+                  nameFb: nameValue,
+                  emailFb: emailValue,
+                  ratePoint: ratePointValue,
+                  rateNum: rateNumValue
+                });
+                user.save(function(err, createdUser){
+                    if(err){
+                        res.json({"success":0, "message": "Could not add record: "+err});
+                    }else {
+                        res.json(createdUser);
+                    }
+                  }
+                );
+        }
+      }
     });
 
 
-  user.save(function(err, createdUser){
-      if(err){
-          res.json({"success":0, "message": "Could not add record: "+err});
-      }else {
-          res.json(createdUser);
-      }
-    }
-  );
+
 });
 app.get('/getAllUser', function(req, res){
   User.find(function(err, users){
