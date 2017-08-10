@@ -117,6 +117,17 @@ app.delete('/deleteFood/:foodId', function(req, res){
       }
     });
 });
+app.get('/getFoodByType/:typeFood', function(req, res){
+  var typeFood = req.params.typeFood;
+  Food.find({'type':typeFood}, function(err, foods){
+    if(err){
+      res.json({success: 0, message: "Could not get data from mlab"});
+    }else {
+      // res.json(foods);
+      res.send({food:foods});
+    }
+  });
+});
 
 
 app.post('/createUser', function(req, res){
