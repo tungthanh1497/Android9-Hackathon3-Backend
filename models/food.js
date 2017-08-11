@@ -10,6 +10,7 @@ var foodSchema = new Schema({
     sets: Number,
     level: String,
     rating: Number,
+    rateNum: Number,
     material: [{
         matName: String,
         matQuantum: String

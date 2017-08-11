@@ -38,6 +38,7 @@ app.post('/createFood', function(req, res){
   var setsValue= body.sets;
   var levelValue= body.level;
   var ratingValue= body.rating;
+  var rateNumValue = body.rateNum;
   var materialValue = body.material;
   var cookValue = body.cook;
 
@@ -51,6 +52,7 @@ app.post('/createFood', function(req, res){
       sets:setsValue,
       level:levelValue,
       rating:ratingValue,
+      rateNum:rateNumValue,
       material:materialValue,
       cook:cookValue
     });
@@ -93,6 +95,7 @@ app.put('/updateFood/:foodId', function(req, res){
         food.sets = req.body.sets || food.sets;
         food.level = req.body.level || food.level;
         food.rating = req.body.rating || food.rating;
+        food.rateNum = req.body.rateNum || food.rateNum;
         food.material = req.body.material || food.material;
         food.cook = req.body.cook || food.cook;
 
