@@ -131,6 +131,17 @@ app.get('/getFoodByType/:typeFood', function(req, res){
     }
   });
 });
+app.get('/getFoodByUser/:userId', function(req, res){
+  var userId = req.params.userId;
+  Food.find({'author':userId}, function(err, foods){
+    if(err){
+      res.json({success: 0, message: "Could not get data from mlab"});
+    }else {
+      // res.json(foods);
+      res.send({food:foods});
+    }
+  });
+});
 
 
 app.post('/createUser', function(req, res){
