@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var Diacritics = require('diacritic');
 var Food = require('./models/food');
 var User = require('./models/user');
 var app = express();
@@ -25,6 +26,30 @@ app.set('view engine', 'ejs');
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
+
+app.post('/searching', function(req, res){
+  var body = req.body;
+  var keySearchFormat = Diacritics.clean(body.keySearch.toLowerCase());
+  Food.find(function(err, foods){
+    if(err){
+      res.json({success: 0, message: "Could not get data from mlab"});
+    }else {
+      // res.json(foods);
+      var foodsReturn = [];
+      foods.forEach(function(value){
+        var nameFormat = Diacritics.clean(value.name.toLowerCase());
+        if(nameFormat.indexOf(keySearchFormat)>-1){
+          foodsReturn.push(value);
+        }
+
+      });
+      res.json(foodsReturn);
+    }
+  });
+});
+
+  // console.log(Diacritics.clean("Iлｔèｒｎåｔïｏｎɑｌíƶａｔï߀ԉ"));
+
 
 app.post('/createFood', function(req, res){
   var body = req.body;
