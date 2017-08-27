@@ -41,9 +41,8 @@ app.post('/searching', function(req, res){
         if(nameFormat.indexOf(keySearchFormat)>-1){
           foodsReturn.push(value);
         }
-
       });
-      res.json(foodsReturn);
+      res.json({food:foodsReturn});
     }
   });
 });
