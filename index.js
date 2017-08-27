@@ -48,8 +48,6 @@ app.post('/searching', function(req, res){
   });
 });
 
-  // console.log(Diacritics.clean("Iлｔèｒｎåｔïｏｎɑｌíƶａｔï߀ԉ"));
-
 
 app.post('/createFood', function(req, res){
   var body = req.body;
