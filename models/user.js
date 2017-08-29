@@ -6,7 +6,8 @@ var userSchema = new Schema({
     nameFb: String,
     emailFb: String,
     ratePoint: Number,
-    rateNum: Number
+    rateNum: Number,
+    listSub: [String]
   }
 );
 var userModel = mongoose.model("User", userSchema);

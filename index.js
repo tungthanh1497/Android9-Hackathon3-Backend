@@ -183,6 +183,7 @@ app.post('/createUser', function(req, res){
           user.emailFb = req.body.emailFb || user.emailFb;
           user.ratePoint = req.body.ratePoint || user.ratePoint;
           user.rateNum = req.body.rateNum || user.rateNum;
+          user.listSub = req.body.listSub || user.listSub;
 
           // Save the updated document back to the database
           user.save(function (err, user) {
@@ -193,7 +194,6 @@ app.post('/createUser', function(req, res){
               }
           });
         }else{
-
             // var idValue = body.id;
             var idValue = body.idFb;
             var avaValue = body.avaFb;
@@ -201,6 +201,7 @@ app.post('/createUser', function(req, res){
             var emailValue = body.emailFb;
             var ratePointValue = body.ratePoint;
             var rateNumValue = body.rateNum;
+            var listSubValue = body.listSub;
               var user = new User({
                   // id:idValue,
                   idFb: idValue,
@@ -208,7 +209,8 @@ app.post('/createUser', function(req, res){
                   nameFb: nameValue,
                   emailFb: emailValue,
                   ratePoint: ratePointValue,
-                  rateNum: rateNumValue
+                  rateNum: rateNumValue,
+                  listSub: listSubValue
                 });
                 user.save(function(err, createdUser){
                     if(err){
@@ -262,6 +264,7 @@ app.put('/updateUser/:userId', function(req, res){
         user.emailFb = req.body.emailFb || user.emailFb;
         user.ratePoint = req.body.ratePoint || user.ratePoint;
         user.rateNum = req.body.rateNum || user.rateNum;
+        user.listSub =req.body.listSub || user.listSub;
 
         // Save the updated document back to the database
         user.save(function (err, user) {
