@@ -99,6 +99,16 @@ app.get('/getFood', function(req, res){
     }
   });
 });
+app.get('/getTopFood', function(req, res){
+  var mysort = { rating: -1 };
+  Food.find().sort(mysort).exec(function(err, result){
+    if(err){
+      res.json({success: 0, message: "Could not get data from mlab"});
+    }else {
+      res.send({food:result});
+    }
+  });
+});
 app.put('/updateFood/:foodId', function(req, res){
   Food.findById(req.params.foodId, function (err, food) {
   // Handle any possible database errors
@@ -184,6 +194,7 @@ app.post('/createUser', function(req, res){
           user.ratePoint = req.body.ratePoint || user.ratePoint;
           user.rateNum = req.body.rateNum || user.rateNum;
           user.listSub = req.body.listSub || user.listSub;
+          user.listFavorite = req.body.listFavorite || user.listFavorite;
 
           // Save the updated document back to the database
           user.save(function (err, user) {
@@ -202,6 +213,7 @@ app.post('/createUser', function(req, res){
             var ratePointValue = body.ratePoint;
             var rateNumValue = body.rateNum;
             var listSubValue = body.listSub;
+            var listFavoriteValue = body.listFavorite;
               var user = new User({
                   // id:idValue,
                   idFb: idValue,
@@ -210,7 +222,8 @@ app.post('/createUser', function(req, res){
                   emailFb: emailValue,
                   ratePoint: ratePointValue,
                   rateNum: rateNumValue,
-                  listSub: listSubValue
+                  listSub: listSubValue,
+                  listFavorite: listFavoriteValue
                 });
                 user.save(function(err, createdUser){
                     if(err){
@@ -265,6 +278,7 @@ app.put('/updateUser/:userId', function(req, res){
         user.ratePoint = req.body.ratePoint || user.ratePoint;
         user.rateNum = req.body.rateNum || user.rateNum;
         user.listSub =req.body.listSub || user.listSub;
+        user.listFavorite = req.body.listFavorite || user.listFavorite;
 
         // Save the updated document back to the database
         user.save(function (err, user) {
