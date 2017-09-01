@@ -18,7 +18,8 @@ var foodSchema = new Schema({
     cook: [{
         image: String,
         note: String
-    }]
+    }],
+    listRate: [String]
   }
 );
 var foodModel = mongoose.model("Food", foodSchema);
