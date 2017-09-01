@@ -168,6 +168,7 @@ app.get('/getFoodByType/:typeFood', function(req, res){
     }
   });
 });
+
 app.get('/getFoodById/:idFood', function(req, res){
   var idFood = req.params.idFood;
   Food.findById(idFood, function (err, food) {
@@ -179,6 +180,7 @@ app.get('/getFoodById/:idFood', function(req, res){
     }
   });
 });
+
 app.get('/getFoodByUser/:userId', function(req, res){
   var userId = req.params.userId;
   Food.find({'author':userId}, function(err, foods){
