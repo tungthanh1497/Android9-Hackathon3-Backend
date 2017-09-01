@@ -1,21 +1,14 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var Q = require("q");
-var pmongo = require('promised-mongo').compatible();;
 var Diacritics = require('diacritic');
 var Food = require('./models/food');
 var User = require('./models/user');
 var app = express();
-
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood'
 , {useMongoClient: true});
 
-// // var db = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood');
-// // var dbUser = db.collection('users');
-// // var dbFood = db.collection('foods');
-// var dbUser = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood', 'users');
-// var dbFood = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood', 'foods');
 
 
 
