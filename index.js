@@ -66,6 +66,7 @@ app.post('/createFood', function(req, res){
   var materialValue = body.material;
   var cookValue = body.cook;
   var listRateValue = body.listRate;
+  var authorNameValue = body.authorName;
 
   var food = new Food({
       // id:idValue,
@@ -80,7 +81,8 @@ app.post('/createFood', function(req, res){
       rateNum:rateNumValue,
       material:materialValue,
       cook:cookValue,
-      listRate:listRateValue
+      listRate:listRateValue,
+      authorName: authorNameValue
     });
 
 
@@ -135,6 +137,7 @@ app.put('/updateFood/:foodId', function(req, res){
         food.material = req.body.material || food.material;
         food.cook = req.body.cook || food.cook;
         food.listRate = req.body.listRate || food.listRate;
+        food.authorName = req.body.authorName || food.authorName;
 
         // Save the updated document back to the database
         food.save(function (err, food) {

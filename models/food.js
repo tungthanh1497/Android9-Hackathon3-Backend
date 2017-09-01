@@ -4,6 +4,7 @@ var foodSchema = new Schema({
     // id: Number,
     name: String,
     author: String,
+    authorName:String,
     imageShow: String,
     type: Number,
     time: String,
