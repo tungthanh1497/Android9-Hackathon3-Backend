@@ -134,7 +134,7 @@ app.put('/updateFood/:foodId', function(req, res){
         food.rateNum = req.body.rateNum || food.rateNum;
         food.material = req.body.material || food.material;
         food.cook = req.body.cook || food.cook;
-        food.listRate = ewq.body.listRate || food.listRate;
+        food.listRate = req.body.listRate || food.listRate;
 
         // Save the updated document back to the database
         food.save(function (err, food) {
