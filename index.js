@@ -213,7 +213,7 @@ app.get('/getFoodFavorite/:userId', function(req, res) {
       if (!userFound || userFound.listFavorite.length < 1)
         res.send('No favorite are yet added.');
       else
-        res.send(userFound.listFavorite);
+        res.send({food:userFound.listFavorite});
     });
 });
 
