@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Food = require('./food');
+
 var userSchema = new Schema({
     idFb: String,
     avaFb: String,
@@ -8,9 +10,10 @@ var userSchema = new Schema({
     ratePoint: Number,
     rateNum: Number,
     listSub: [String],
-    listFavorite: [String]
+    listFavorite: [{type: Schema.Types.ObjectId, ref: 'Food'}] // list of id (ref)
   }
 );
+
 var userModel = mongoose.model("User", userSchema);
 
 module.exports = userModel;

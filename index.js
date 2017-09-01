@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var Q = require("q");
+var pmongo = require('promised-mongo').compatible();;
 var Diacritics = require('diacritic');
 var Food = require('./models/food');
 var User = require('./models/user');
@@ -8,6 +10,13 @@ var app = express();
 
 mongoose.connect('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood'
 , {useMongoClient: true});
+
+// // var db = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood');
+// // var dbUser = db.collection('users');
+// // var dbFood = db.collection('foods');
+// var dbUser = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood', 'users');
+// var dbFood = pmongo('mongodb://admin:admin@ds161209.mlab.com:61209/cookmix_listfood', 'foods');
+
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -178,6 +187,42 @@ app.get('/getFoodByUser/:userId', function(req, res){
   });
 });
 
+// app.get('/getFoodFavorite/:userId', function(req, res) {
+//     User.findOne({'idFb':req.params.userId}, function (err, userFound) {
+//         if(err){
+//             res.json({success: 0, message: "Could not get data from mlab"});
+//         }else {
+//             var foodsReturn = [];
+//             var listFavoriteValue = userFound.listFavorite;
+//             listFavoriteValue.forEach(function(value){
+//                 Food.findById(value, function (err, food) {
+//                     if (err) {
+//                         res.json({success: 0, message: "Could not get data from mlab"});
+//                     } else {
+//                         foodsReturn.push(food);
+//                         console.log("FindById: " + foodsReturn);
+//                     }
+//                 });
+//                 console.log("Foreach: "+foodsReturn);
+//             });
+//             console.log("Return"+foodsReturn);
+//             res.send({food:foodsReturn});
+//         }
+//     });
+// });
+
+
+app.get('/getFoodFavorite/:userId', function(req, res) {
+
+    User.findOne({'idFb':req.params.userId}).populate('listFavorite').exec(function(err, userFound) {
+      if (err)
+        console.log('Error in view survey codes function');
+      if (!userFound || userFound.listFavorite.length < 1)
+        res.send('No favorite are yet added.');
+      else
+        res.send(userFound.listFavorite);
+    });
+});
 
 app.post('/createUser', function(req, res){
   var body = req.body;
